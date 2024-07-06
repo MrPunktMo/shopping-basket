@@ -84,5 +84,31 @@ class TotalPriceServiceTests {
 
     }
 
+    @Test
+    @DisplayName("Get total prized of reduced items with one more for total off")
+    void getTotalPricesWithReducedItemsWithOneAdditonalItem() {
+
+        Integer basketId = basketService.createBasket();
+        assertNotNull(basketId);
+
+        Item item1_3 = new Item();
+        item1_3.setId(1L);
+        item1_3.setName("Item Test 1");
+        item1_3.setPrice(10f);
+
+        items.forEach(item -> basketService.addItemToBasket(basketId, item));
+        basketService.addItemToBasket(basketId, item1_3);
+
+        vouchers.forEach(voucher -> voucherService.addVoucherToBasket(basketId, voucher));
+
+        Float totalPrice = totalPriceService.getTotalPriceOfBasket(basketId);
+        assertNotNull(totalPrice);
+        //3 * 10 (one off - item1) --> 20
+        //1 * 20 (10 percent off) --> 18
+        //Total: 28
+        assertEquals(38f, totalPrice);
+
+    }
+
 
 }

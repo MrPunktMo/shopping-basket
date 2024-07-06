@@ -2,7 +2,8 @@ package org.triplem.shoppingbasket.basket.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.triplem.shoppingbasket.basket.component.Basket;
+import org.triplem.shoppingbasket.basket.component.basket.Basket;
+import org.triplem.shoppingbasket.basket.component.basket.ItemWrapper;
 import org.triplem.shoppingbasket.models.Item;
 
 import java.util.*;
@@ -41,7 +42,7 @@ public class BasketService {
             baskets.get(basketId).removeItem(item);
     }
 
-    public List<Item> getAllItemsInBasket(Integer basketId) {
+    public List<ItemWrapper> getAllItemsInBasket(Integer basketId) {
 
         if(basketId == null) {
             log.warn("Cannot get items, basketId was not provided!");

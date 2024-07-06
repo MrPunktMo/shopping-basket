@@ -3,15 +3,17 @@ package org.triplem.shoppingbasket.basket.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.triplem.shoppingbasket.models.Item;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class TotalPriceService {
-    
+
+    private final DecimalFormat priceFormat = new DecimalFormat("#.##");
+
     private final BasketService basketService;
     private final VoucherService voucherService;
 
@@ -21,12 +23,20 @@ public class TotalPriceService {
             log.warn("Cannot get total price without basketId!");
             return 0f;
         } else {
-            return voucherService
+
+            return formatPrice(
+                    voucherService
                     .applyVouchersToBasket(basketId, basketService.getAllItemsInBasket(basketId)).stream()
-                    .map(Item::getPrice)
+                    .map(itemWrapper -> itemWrapper.getItem().getPrice() * itemWrapper.getCount())
                     .reduce(Float::sum)
-                    .orElse(0f);
+                    .orElse(0f)
+            );
+
         }
+    }
+
+    private Float formatPrice(Float unformattedPrice) {
+        return Float.parseFloat(priceFormat.format(unformattedPrice));
     }
 
 }

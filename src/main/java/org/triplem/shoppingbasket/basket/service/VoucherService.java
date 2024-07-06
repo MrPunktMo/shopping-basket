@@ -2,8 +2,8 @@ package org.triplem.shoppingbasket.basket.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.triplem.shoppingbasket.basket.component.VoucherRule;
-import org.triplem.shoppingbasket.models.Item;
+import org.triplem.shoppingbasket.basket.component.basket.ItemWrapper;
+import org.triplem.shoppingbasket.basket.component.voucher.VoucherRule;
 import org.triplem.shoppingbasket.models.Voucher;
 
 import java.util.*;
@@ -36,7 +36,7 @@ public class VoucherService {
         }
     }
 
-    public List<Item> applyVouchersToBasket(Integer basketId, List<Item> items) {
+    public List<ItemWrapper> applyVouchersToBasket(Integer basketId, List<ItemWrapper> items) {
 
         if(vouchersToBaskets.containsKey(basketId)) {
             vouchersToBaskets.get(basketId).forEach(voucher -> voucherRules.get(voucher.getType()).processRule(voucher, items));
