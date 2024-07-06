@@ -1,0 +1,175 @@
+openapi: 3.0.0
+x-stoplight:
+  id: izg6f2ebescb5
+info:
+  title: shopping-basket-api
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /basket:
+    post:
+      summary: Create a new basket
+      tags:
+        - Basket
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '500':
+          description: Internal Server Error
+      operationId: postBasket
+      x-stoplight:
+        id: wl2tzkq4uaph2
+      description: Create an new basket
+  '/basket/{basketId}':
+    parameters:
+      - schema:
+          type: integer
+          format: int32
+        name: basketId
+        in: path
+        required: true
+        description: Id of specific basket
+    get:
+      summary: Get items in basket
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+      operationId: getAllItemsInBasket
+      x-stoplight:
+        id: u6352s9vef9gt
+    post:
+      summary: Add item to basket
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: addItemToBasket
+      x-stoplight:
+        id: 73aro23dmoa98
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+  '/basket/{basketId}/total':
+    parameters:
+      - schema:
+          type: integer
+          format: int32
+        name: basketId
+        in: path
+        required: true
+        description: Id of specific basket
+    get:
+      summary: Get total price of items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: number
+                format: float
+      operationId: getTotalPriceOfBasket
+      x-stoplight:
+        id: ok3q6gcnb1jkr
+  '/basket/{basketId}/voucher':
+    parameters:
+      - schema:
+          type: integer
+          format: int32
+        name: basketId
+        in: path
+        required: true
+        description: Id of specific basket
+    post:
+      summary: Add voucher to basket
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '304':
+          description: Not Modified
+        '500':
+          description: Internal Server Error
+      operationId: addVoucherToBasket
+      x-stoplight:
+        id: oaybdb5yls502
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Voucher'
+components:
+  schemas:
+    Item:
+      title: Item
+      x-stoplight:
+        id: r5zle5fvwsdzj
+      type: object
+      x-tags:
+        - Item
+      description: Item of inventory
+      required:
+        - id
+        - name
+        - price
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: si9acidbqune8
+          format: int64
+        name:
+          type: string
+          x-stoplight:
+            id: s2xvda6nrq310
+        price:
+          type: number
+          x-stoplight:
+            id: zv3n7cvdwv3hu
+          format: float
+    Voucher:
+      title: Voucher
+      x-stoplight:
+        id: ix55ldvekcb16
+      type: object
+      description: Voucher to be used on items
+      required:
+        - id
+        - type
+        - itemId
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: 90q5nnumbt9f2
+          format: int64
+        type:
+          type: string
+          x-stoplight:
+            id: 04h0mbo9jaga8
+          enum:
+            - Buy1Get1ForFree
+            - 10PercentOfArticle
+        itemId:
+          type: integer
+          x-stoplight:
+            id: fmhbmkbo1n2g7
+          format: int64
+      x-tags:
+        - Voucher
